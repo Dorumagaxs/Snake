@@ -1,0 +1,7 @@
+
+#!bin/bash
+
+lines=$(tput lines)
+columns=$(tput cols)
+
+./Snake.c.o $lines $columns
