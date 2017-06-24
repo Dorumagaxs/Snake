@@ -4,4 +4,6 @@
 lines=$(tput lines)
 columns=$(tput cols)
 
+gcc src/Snake.c -o Snake.c.o
 ./Snake.c.o $lines $columns
+rm Snake.c.o
