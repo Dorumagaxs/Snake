@@ -1,11 +1,7 @@
 #define NO_MEMORY_ERROR "[ERROR] No enough memory available"
 
-typedef struct Point {
-	int x, y;
-} Point;
-
 typedef struct Node {
-	Point value;
+	void *value;
 	Node *next;
 }
 
@@ -19,9 +15,11 @@ Queue* newQueue() {
 	queue.first = NULL;
 	queue.last = NULL;
 	queue.size = 0;
+
+	return queue;
 }
 
-void enqueue(Queue *queue, Point value) {
+void enqueue(Queue *queue, void *value) {
 	if (queue->size == 0) {
 		queue->first = (Node*) malloc(sizeof(Node));
 		if (queue->first == NULL) {
@@ -47,8 +45,8 @@ void enqueue(Queue *queue, Point value) {
 	queue->size++;
 }
 
-Point dequeue(Queue *queue) {
-	Point dequeuedValue = {0,0};
+void* dequeue(Queue *queue) {
+	void *dequeuedValue = NULL;
 
 	if (queue->size > 0) {
 		dequeuedValue = queue->last->value;
@@ -60,4 +58,20 @@ Point dequeue(Queue *queue) {
 	}
 
 	return dequeuedValue;
+}
+
+void* getValue(Queue *queue, unsigned int index) {
+	Node *wantedValue = NULL;
+
+	if ( (index > 0)&&(index < queue->size) ) {
+		int i;
+		Node *wantedNode = queue->first;
+
+		for (i=0; i<index; i++)
+			wantedNode = wantedNode->next;
+
+		wantedValue = wantedNode->value;
+	}
+
+	return wantedValue;
 }
