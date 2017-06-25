@@ -6,5 +6,5 @@ columns=$(tput cols)
 
 gcc src/Snake.c -o bin/Snake.c.o
 stty raw
-./Snake.c.o $lines $columns
+./bin/Snake.c.o $lines $columns
 stty cooked -brkint 
