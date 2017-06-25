@@ -1,11 +1,21 @@
 
 #!bin/bash
 
+#Get the size of terminal screen
 lines=$(tput lines)
 columns=$(tput cols)
 
+#Compiles the source code
 gcc src/Snake.c -o bin/Snake.c.o
+#Hide cursor
+tput civis
+#Put terminal on raw mode
 stty raw
+#Execute the binary file
 ./bin/Snake.c.o $lines $columns
+#Put terminal no cooked -brkint mode
 stty cooked -brkint
+#Unhide cursor
+tput cnorm
+
 clear

@@ -1,6 +1,7 @@
 //ANSI C libs
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 //Custom libs
 #include "../libs/doruUtilities.h"
@@ -10,56 +11,41 @@
 
 int screenWidth, screenHeight;
 
-void printScreenBorder(int width, int height) {
-    char line[width+1];
-    char noline[width+1];
-    int i;
 
 
-    line[0] = '|';
-    noline[0] = '|';
-    line[width-1] = '|';
-    noline[width-1] = '|';
-    line[width] = 0;
-    noline[width] = 0;
-
-    for (i=1; i<width-1; i++) {
-    	line[i] = '-';
-    	noline[i] = ' ';
-    }
-
-    gotoxy(1,1);
-    printf("%s", line);
-
-    for (i=2; i<5; i++) {
-    	gotoxy(1,i);
-    	printf("%s", noline);
-    }
-
-    gotoxy(1,5);
-    printf("%s", line);
-
-    for (i=6; i<height; i++) {
-    	gotoxy(1,i);
-    	printf("%s", noline);
-    }
-
-    gotoxy(1,height);
-    printf("%s", line);
-}
-
-void initGame() {
+void startGame() {
 	char event;
+	int i;
+	Coordinate initGameArea, endGameArea;
+	struct timespec waitingTime;
+	Queue *snake;
 
-	Queue *snake = newSnake(screenWidth/2 - 2, screenHeight/2);
+	initGameArea.x = 2;
+	initGameArea.y = 6;
+	endGameArea.x = screenWidth-1;
+	endGameArea.y = screenHeight-1;
+
+	waitingTime.tv_sec = 0;
+	waitingTime.tv_nsec = 100000000;
+
+	snake = newSnake(screenWidth/2 - 2, screenHeight/2);
 	printSnake(snake);
-
+	clearArea(initGameArea, endGameArea);
+	
+	for (i=0; i<20; i++) {
+		moveSnake(snake);
+		clearArea(initGameArea, endGameArea);
+		printSnake(snake);
+		nanosleep(&waitingTime, NULL);
+	}
+	
+	fflush(stdin);
 	event = getchar();
     printf("%i", event);
 }
 
 void menu() {
-	initGame();
+	startGame();
 }
 
 int main(int argc, char *argv[]) {

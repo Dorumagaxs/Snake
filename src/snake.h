@@ -44,6 +44,32 @@ void printSnake(Queue *snake) {
 		snakePoint = (SnakePoint*) getValue(snake, i);
 		gotoxy(snakePoint->x, snakePoint->y);
 		printf("#");
+		fflush(stdout);
+	}
+}
+
+void moveSnake(Queue *snake) {
+	int i;
+	SnakePoint *snakePoint;
+
+	for (i=0; i<snake->size; i++) {
+		snakePoint = (SnakePoint*) getValue(snake, i);
+
+		if (snakePoint->direction == RIGHT)
+			snakePoint->x++;
+		else if (snakePoint->direction == LEFT)
+			snakePoint->x--;
+		else if (snakePoint->direction == DOWN)
+			snakePoint->y++;
+		else if (snakePoint->direction == UP)
+			snakePoint->y--;
+
+		if (i < snake->size-1) {
+			SnakePoint *nextSnakePoint;
+			nextSnakePoint = (SnakePoint*) getValue(snake, i+1);
+
+			snakePoint->direction = nextSnakePoint->direction;
+		}
 	}
 }
 
@@ -74,4 +100,3 @@ void feedSnake(Queue *snake) {
 
 	enqueue(snake, newSnakePoint);
 }
-
