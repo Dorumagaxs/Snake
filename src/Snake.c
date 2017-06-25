@@ -38,7 +38,30 @@ void startGame() {
 		printSnake(snake);
 		nanosleep(&waitingTime, NULL);
 	}
+	turnSnake(snake, DOWN);
+	for (i=0; i<5; i++) {
+		moveSnake(snake);
+		clearArea(initGameArea, endGameArea);
+		printSnake(snake);
+		nanosleep(&waitingTime, NULL);
+	}
 	
+	turnSnake(snake, LEFT);
+	for (i=0; i<20; i++) {
+		moveSnake(snake);
+		clearArea(initGameArea, endGameArea);
+		printSnake(snake);
+		nanosleep(&waitingTime, NULL);
+	}
+	turnSnake(snake, UP);
+	for (i=0; i<10; i++) {
+		moveSnake(snake);
+		clearArea(initGameArea, endGameArea);
+		printSnake(snake);
+		nanosleep(&waitingTime, NULL);
+	}
+	
+
 	fflush(stdin);
 	event = getchar();
     printf("%i", event);
