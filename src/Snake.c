@@ -43,6 +43,9 @@ void printScreenBorder(int width, int height) {
     	gotoxy(1,i);
     	printf("%s", noline);
     }
+
+    gotoxy(1,height);
+    printf("%s", line);
 }
 
 void initGame() {
