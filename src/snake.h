@@ -1,4 +1,4 @@
-#include "../libs/pointQueue.h"
+#include "../libs/queue.h"
 
 typedef enum{UP, DOWN, LEFT, RIGHT} Direction;
 
@@ -7,22 +7,51 @@ typedef struct SnakePoint {
 	Direction direction;
 } SnakePoint;
 
-typedef struct Snake {
-	Direction direction;
-	Queue *body;
-} Snake;
+SnakePoint* newSnakePoint(int x, int y, Direction direction) {
+	SnakePoint *newSnakePoint = (SnakePoint*) malloc(sizeof(SnakePoint));
 
-Queue* newSnake() {
+	if (newSnakePoint == NULL) {
+		printf("%s", NO_MEMORY_ERROR);
+		exit(0);
+	}
+
+	newSnakePoint->x = x;
+	newSnakePoint->y = y;
+	newSnakePoint->direction = direction;
+
+	return newSnakePoint;
+}
+
+Queue* newSnake(int x, int y) {
+	int i;
 	Queue *snake = newQueue();
+
+	for (i=2; i>=-2; i--)
+		enqueue(snake, newSnakePoint(x+i, y, RIGHT));
 
 	return snake;
 }
 
+void printSnake(Queue *snake) {
+	int i;
+	SnakePoint *snakePoint;
+
+	snakePoint = (SnakePoint*) getValue(snake, 0);
+	gotoxy(snakePoint->x, snakePoint->y);
+	printf("@");
+
+	for (i=1; i<snake->size; i++) {
+		snakePoint = (SnakePoint*) getValue(snake, i);
+		gotoxy(snakePoint->x, snakePoint->y);
+		printf("#");
+	}
+}
+
 void feedSnake(Queue *snake) {
-	SnakePoint *newSnakePoint, lastSnakePoint;
+	SnakePoint *newSnakePoint, *lastSnakePoint;
 
 	newSnakePoint = (SnakePoint*) malloc(sizeof(SnakePoint));
-	lastSnakePoint = ( (SnakePoint*)getValue(snake, snake->size-1) );
+	lastSnakePoint = ( (SnakePoint*) getValue(snake, snake->size-1) );
 
 	newSnakePoint->direction = lastSnakePoint->direction;
 
@@ -45,3 +74,4 @@ void feedSnake(Queue *snake) {
 
 	enqueue(snake, newSnakePoint);
 }
+

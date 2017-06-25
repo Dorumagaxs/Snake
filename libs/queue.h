@@ -2,19 +2,25 @@
 
 typedef struct Node {
 	void *value;
-	Node *next;
-}
+	struct Node *next;
+} Node;
 
 typedef struct Queue {
 	int size;
-	Node *first;
+	Node *first, *last;
 } Queue;
 
 Queue* newQueue() {
-	Queue queue;
-	queue.first = NULL;
-	queue.last = NULL;
-	queue.size = 0;
+	Queue *queue = (Queue*) malloc(sizeof(Queue));
+
+	if (queue == NULL) {
+		printf("%s", NO_MEMORY_ERROR);
+		exit(0);
+	}
+
+	queue->first = NULL;
+	queue->last = NULL;
+	queue->size = 0;
 
 	return queue;
 }
@@ -39,22 +45,27 @@ void enqueue(Queue *queue, void *value) {
 		queue->last = queue->last->next;
 	}
 
-	queue->first->value = value;
-	queue->first->next = NULL;
+	queue->last->value = value;
+	queue->last->next = NULL;
 
 	queue->size++;
 }
 
 void* dequeue(Queue *queue) {
 	void *dequeuedValue = NULL;
+	Node *toBeDeleted;
 
 	if (queue->size > 0) {
-		dequeuedValue = queue->last->value;
+		toBeDeleted = queue->first;
 
-		free(queue->last);
-		queue->last = NULL;
+		dequeuedValue = toBeDeleted->value;
 
-		size--;
+		queue->first = toBeDeleted->next;
+
+		toBeDeleted->next = NULL;
+		free(toBeDeleted);
+
+		queue->size--;
 	}
 
 	return dequeuedValue;
@@ -63,7 +74,7 @@ void* dequeue(Queue *queue) {
 void* getValue(Queue *queue, unsigned int index) {
 	Node *wantedValue = NULL;
 
-	if ( (index > 0)&&(index < queue->size) ) {
+	if ( (index >= 0)&&(index < queue->size) ) {
 		int i;
 		Node *wantedNode = queue->first;
 

@@ -1,7 +1,12 @@
+//ANSI C libs
 #include <stdlib.h>
 #include <stdio.h>
 
+//Custom libs
 #include "../libs/doruUtilities.h"
+
+//Modules
+#include "snake.h"
 
 int screenWidth, screenHeight;
 
@@ -40,9 +45,14 @@ void printScreenBorder(int width, int height) {
     }
 }
 
-void game() {
-	gotoxy(screenWidth/2, (screenHeight-5)/2);
-	printf("%s")
+void initGame() {
+	char event;
+
+	Queue *snake = newSnake(screenWidth/2 - 2, screenHeight/2);
+	printSnake(snake);
+
+	event = getchar();
+    printf("%i", event);
 }
 
 void menu() {
@@ -64,8 +74,7 @@ int main(int argc, char *argv[]) {
 
     menu();
 
-    char b = getchar();
-    printf("%i", b);
+    
 
 	return 0;
 }
