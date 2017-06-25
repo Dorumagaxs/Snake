@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "../libs/doruUtilities.h"
 
@@ -40,8 +41,9 @@ void printScreenBorder(int width, int height) {
     }
 }
 
-void initGame() {
-	gotoxy(screenWidth/2, (screenHeight-5)/2); 
+void game() {
+	gotoxy(screenWidth/2, (screenHeight-5)/2);
+	printf("%s")
 }
 
 void menu() {
