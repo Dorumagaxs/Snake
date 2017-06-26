@@ -14,6 +14,8 @@ int screenWidth, screenHeight;
 pthread_t tid[2];
 
 void* moving(void *snake) {
+	tid[1] = pthread_self();
+
 	int i;
 	Coordinate initGameArea, endGameArea;
 	struct timespec waitingTime;
@@ -26,7 +28,7 @@ void* moving(void *snake) {
 	waitingTime.tv_sec = 0;
 	waitingTime.tv_nsec = 100000000;
 
-	for (i=0; i<20; i++) {
+	while (1) {
 		moveSnake((Queue*)snake);
 		clearArea(initGameArea, endGameArea);
 		printSnake((Queue*)snake);
@@ -37,8 +39,8 @@ void* moving(void *snake) {
 }
 
 void startGame() {
-	char event;
-	int i, threadError;
+
+	int i, threadError, stopGame, event;
 	Coordinate initGameArea, endGameArea;
 	struct timespec waitingTime;
 	Queue *snake;
@@ -60,10 +62,11 @@ void startGame() {
 		exit(0);
 	}
 
-	// while(1) {
+	stopGame = 0;
+	while(!stopGame) {
 		fflush(stdin);
 		event = getchar();
-		/*
+
 		if (event == 27) {
 			event = getchar();
 
@@ -78,15 +81,19 @@ void startGame() {
 						turnSnake(snake, DOWN);
 						break;
 					case 67:
-						turnSnake(snake, LEFT);
-						break;
-					case 68:
 						turnSnake(snake, RIGHT);
 						break;
+					case 68:
+						turnSnake(snake, LEFT);
+						
 				}
 			}
 		}
-	}*/
+		else {
+			stopGame = 1;
+			pthread_cancel(tid[1]);
+		}
+	}
 }
 
 void menu() {
