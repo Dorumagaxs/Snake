@@ -6,13 +6,13 @@ lines=$(tput lines)
 columns=$(tput cols)
 
 #Compiles the source code
-gcc -pthread -o ./bin/Snake.c.o ./src/Snake.c
+gcc -pthread -o ./bin/Snake ./src/Snake.c
 #Hide cursor
 tput civis
 #Put terminal on raw mode
 stty raw
 #Execute the binary file
-./bin/Snake.c.o $lines $columns
+./bin/Snake $lines $columns
 #Put terminal no cooked -brkint mode
 stty cooked -brkint
 #Unhide cursor
