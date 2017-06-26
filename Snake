@@ -6,7 +6,7 @@ lines=$(tput lines)
 columns=$(tput cols)
 
 #Compiles the source code
-gcc src/Snake.c -o bin/Snake.c.o
+gcc -pthread -o ./bin/Snake.c.o ./src/Snake.c
 #Hide cursor
 tput civis
 #Put terminal on raw mode

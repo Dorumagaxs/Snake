@@ -49,11 +49,6 @@ void printSnake(Queue *snake) {
 }
 
 void moveSnake(Queue *snake) {
-	FILE *f = fopen("../logs/snakePointsDirections", "a");
-	if (f == NULL) {
-		printf("[ERROR] Could not open file");
-		exit(0);
-	}
 	int i;
 	SnakePoint *snakePoint;
 
@@ -73,12 +68,9 @@ void moveSnake(Queue *snake) {
 			SnakePoint *nextSnakePoint;
 			nextSnakePoint = (SnakePoint*) getValue(snake, i-1);
 
-			fprintf(f, "Element %i has direction %d -> Element %i has direction %d\n", i, snakePoint->direction, i-1, nextSnakePoint->direction);
 			snakePoint->direction = nextSnakePoint->direction;
 		}
 	}
-
-	fclose(f);
 }
 
 void turnSnake(Queue *snake, Direction direction) {
