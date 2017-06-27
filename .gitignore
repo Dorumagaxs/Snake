@@ -1,4 +1,5 @@
+bin/
 testes/
 logs/
-src/log
+src/log*
 a.out
