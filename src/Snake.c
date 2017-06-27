@@ -82,6 +82,7 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 	int i, threadError, event;
 	Coordinate initGameArea, endGameArea;
 	struct timespec waitingTime;
+	SnakePoint *snakeHead;
 	Queue *snake;
 
 	initGameArea.x = 2;
@@ -93,6 +94,7 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 	waitingTime.tv_nsec = 100000000;
 
 	snake = newSnake(screenWidth/2 - 2, screenHeight/2);
+	snakeHead = (SnakePoint*) getValue(snake, 0);
 
 	srand(time(NULL));
 
@@ -119,16 +121,16 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 
 				switch (event) {
 					case 65:
-						turnSnake(snake, UP);
+						turnSnake(snakeHead, UP);
 						break;
 					case 66:
-						turnSnake(snake, DOWN);
+						turnSnake(snakeHead, DOWN);
 						break;
 					case 67:
-						turnSnake(snake, RIGHT);
+						turnSnake(snakeHead, RIGHT);
 						break;
 					case 68:
-						turnSnake(snake, LEFT);
+						turnSnake(snakeHead, LEFT);
 						
 				}
 			}

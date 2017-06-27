@@ -85,11 +85,18 @@ void moveSnake(Queue *snake) {
 	}
 }
 
-void turnSnake(Queue *snake, Direction direction) {
-	SnakePoint *snakeHead;
+int isValidDirection(Direction snakeHeadDirection, Direction turnDirection) {
+	return !(
+		(snakeHeadDirection == UP 	 && turnDirection == DOWN)	||
+		(snakeHeadDirection == DOWN  && turnDirection == UP)	||
+		(snakeHeadDirection == LEFT  && turnDirection == RIGHT)	||
+		(snakeHeadDirection == RIGHT && turnDirection == LEFT)
+	);
+}
 
-	snakeHead = (SnakePoint*) getValue(snake, 0);
-	snakeHead->direction = direction;
+void turnSnake(SnakePoint *snakeHead, Direction turnDirection) {
+	if (isValidDirection(snakeHead->direction, turnDirection))
+		snakeHead->direction = turnDirection;
 }
 
 Coordinate generateFood(Queue *snake, Coordinate initGameArea, Coordinate endGameArea) {
@@ -168,7 +175,7 @@ void feedSnake(Queue *snake) {
 	SnakePoint *newSnakePoint, *lastSnakePoint;
 
 	newSnakePoint = (SnakePoint*) malloc(sizeof(SnakePoint));
-	lastSnakePoint = ( (SnakePoint*) getValue(snake, snake->size-1) );
+	lastSnakePoint = (SnakePoint*) getValue(snake, snake->size-1);
 
 	newSnakePoint->direction = lastSnakePoint->direction;
 
