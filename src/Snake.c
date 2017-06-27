@@ -59,19 +59,21 @@ void* moving(void *snake) {
 		if (isColliding(snake, initGameArea, endGameArea)) {
 			stopGame = 1;
 		}
-		if (ateFood(snakeHead, food)) {
-			isThereFood = 0;
-			feedSnake(snake);
+		else {
+			if (ateFood(snakeHead, food)) {
+				isThereFood = 0;
+				feedSnake(snake);
 
-			score++;
-			printScore(score);
-		}
-		if (!isThereFood) {
-			food = generateFood(snake, initGameArea, endGameArea);
-			isThereFood = 1;
-			printFood(food);
-		}
-		nanosleep(&waitingTime, NULL);
+				score++;
+				printScore(score);
+			}
+			if (!isThereFood) {
+				food = generateFood(snake, initGameArea, endGameArea);
+				isThereFood = 1;
+				printFood(food);
+			}
+			nanosleep(&waitingTime, NULL);
+		} 
 	}
 
 	return NULL;
