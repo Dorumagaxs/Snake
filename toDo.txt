@@ -1,0 +1,10 @@
+**FEATURES**
+	Title
+	Score
+	Records
+	Menu
+
+**BUGS FIXES**
+	Collision with snake body
+	Sneak increasing disconnected from the body
+	Disallow turning backwards

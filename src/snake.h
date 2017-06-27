@@ -32,6 +32,18 @@ Queue* newSnake(int x, int y) {
 	return snake;
 }
 
+void clearSnake(Queue *snake) {
+	int i;
+	SnakePoint *snakePoint;
+
+	for (i=0; i<snake->size; i++) {
+		snakePoint = (SnakePoint*) getValue(snake, i);
+		gotoxy(snakePoint->x, snakePoint->y);
+		printf(" ");
+		fflush(stdout);
+	}
+}
+
 void printSnake(Queue *snake) {
 	int i;
 	SnakePoint *snakePoint;
@@ -103,8 +115,13 @@ Coordinate generateFood(Queue *snake, Coordinate initGameArea, Coordinate endGam
 			}
 		}
 	} while(!isValidCoordinateForFood);
-
+	
 	return food;
+}
+
+void printFood(Coordinate food) {
+	gotoxy(food.x, food.y);
+	printf("*");
 }
 
 int ateFood(SnakePoint *snakeHead, Coordinate food) {
