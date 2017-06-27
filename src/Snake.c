@@ -16,8 +16,8 @@ pthread_t tid[2];
 void* moving(void *snake) {
 	tid[1] = pthread_self();
 
-	int i;
-	Coordinate initGameArea, endGameArea;
+	int i, isThereFood;
+	Coordinate initGameArea, endGameArea, food;
 	struct timespec waitingTime;
 	SnakePoint *snakeHead;
 
@@ -35,7 +35,7 @@ void* moving(void *snake) {
 		clearArea(initGameArea, endGameArea);
 		moveSnake((Queue*)snake);
 		printSnake((Queue*)snake);
-		if (isThereCollision(snakeHead, initGameArea, endGameArea)) {
+		if (isThereCollidingWithBorder(snakeHead, initGameArea, endGameArea)) {
 			stopGame = 1;
 		}
 		nanosleep(&waitingTime, NULL);
@@ -61,6 +61,8 @@ void startGame() {
 
 	snake = newSnake(screenWidth/2 - 2, screenHeight/2);
 
+	srand(time(NULL));
+	
 	threadError = pthread_create(&(tid[1]), NULL, &moving, snake);
 	
 	if (threadError != 0) {

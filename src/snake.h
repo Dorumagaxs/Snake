@@ -80,17 +80,42 @@ void turnSnake(Queue *snake, Direction direction) {
 	snakeHead->direction = direction;
 }
 
-int isThereCollision(SnakePoint *snakeHead, Coordinate initGameArea, Coordinate endGameArea) {
-    int x, y, collision;
-    
-    collision = 0;
+Coordinate generateFood(Queue *snake, Coordinate initGameArea, Coordinate endGameArea) {
+	int i, isValidCoordinateForFood;
+	Coordinate food, *snakeCoordinates;
 
-    if ( (snakeHead->x == initGameArea.x)||(snakeHead->x == endGameArea.x)||
-         (snakeHead->y == initGameArea.y)||(snakeHead->y == endGameArea.y) ) {
-        collision = 1;
-    }
-    
-    return collision;
+	snakeCoordinates = (Coordinate*) malloc(snake->size * sizeof(Coordinate));
+
+	for (i=0; i<snake->size; i++) {
+		snakeCoordinates[i]->x = ( (SnakePoint*)getValue(snake, i) )->x;
+		snakeCoordinates[i]->y = ( (SnakePoint*)getValue(snake, i) )->y;
+	}
+
+	isValidCoordinateForFood = 1;
+	do {
+		food.x = (rand() % (endGameArea.x - initGameArea.x + 1)) + initGameArea.x;
+		food.y = (rand() % (endGameArea.y - initGameArea.y + 1)) + initGameArea.y;
+
+		for (i=0; i<snake->size; i++) {
+			if ( (food.x == snakeCoordinates[i]->x)&&(food.y == snakeCoordinates[i]->y) ) {
+				isValidCoordinateForFood = 0;
+				i = snake->size;
+			}
+		}
+	} while(!isValidCoordinateForFood);
+
+	return food;
+}
+
+int ateFood(SnakePoint *snakeHead, Coordinate food) {
+	return (snakeHead->x == food->x)&&(snakeHead->y == food.y);
+}
+
+int isCollidingWithBorder(SnakePoint *snakeHead, Coordinate initGameArea, Coordinate endGameArea) {
+    return ( 
+    	(snakeHead->x == initGameArea.x)||(snakeHead->x == endGameArea.x)||
+        (snakeHead->y == initGameArea.y)||(snakeHead->y == endGameArea.y) 
+    );
 }
 
 void feedSnake(Queue *snake) {
