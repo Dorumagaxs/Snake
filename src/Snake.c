@@ -7,9 +7,11 @@
 
 //Custom libs
 #include "../libs/doruUtilities.h"
+#include "../libs/queue.h"
 
 //Modules
 #include "snake.h"
+#include "scores.h"
 
 int screenWidth, screenHeight, stopGame;
 pthread_t tid[2];
@@ -21,12 +23,11 @@ void showRecordsTable(Coordinate initTitleArea, Coordinate endTitleArea);
 void menu();
 
 void printScore(int score) {
-	
-	char scoreString[15], stringifiedNumber[5];
-	
 	gotoxy(screenWidth/2-5, 3);
 	printf("SCORE: %04d", score);
 
+    gotoxy(screenWidth-15, 3);
+    printf("RECORD: %04d", getRecord());
 }
 
 void* moving(void *snake) {
@@ -144,7 +145,7 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 }
 
 void showRecordsTable(Coordinate initTitleArea, Coordinate endTitleArea) {
-	
+
 }
 
 void menu() {
@@ -191,7 +192,7 @@ int main(int argc, char *argv[]) {
 
     screenHeight = atoi(argv[1]);
     screenWidth = atoi(argv[2]);
-    
+
     menu();
 
 	return 0;

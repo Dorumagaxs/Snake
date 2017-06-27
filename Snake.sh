@@ -5,6 +5,16 @@
 lines=$(tput lines)
 columns=$(tput cols)
 
+#Create 'files' folder
+if [ ! -d ./files ]; then
+    mkdir ./files
+fi
+
+#Create 'scores' file
+if [ ! -f ./files/scores ]; then
+    touch ./files/scores
+fi
+
 #Create 'binary' folder
 if [ ! -d ./binary ]; then
     mkdir ./binary	

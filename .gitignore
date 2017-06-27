@@ -1,5 +1,9 @@
 testes/
+src/test*
+
 logs/
-binary/
 src/log*
+
+binary/
+
 a.out

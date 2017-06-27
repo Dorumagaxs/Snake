@@ -1,5 +1,3 @@
-#include "../libs/queue.h"
-
 typedef enum{UP, DOWN, LEFT, RIGHT} Direction;
 
 typedef struct SnakePoint {
