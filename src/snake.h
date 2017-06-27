@@ -128,12 +128,40 @@ int ateFood(SnakePoint *snakeHead, Coordinate food) {
 	return (snakeHead->x == food.x)&&(snakeHead->y == food.y);
 }
 
-int isCollidingWithBorder(SnakePoint *snakeHead, Coordinate initGameArea, Coordinate endGameArea) {
+int isCollidingWithSnake(Queue *snake) {
+    int i, collision;
+    SnakePoint *snakeHead, *snakeBodyPoint;
+
+    collision = 0;
+    snakeHead = (SnakePoint*) getValue(snake, 0);
+    for (i=1; i<snake->size; i++) {
+        snakeBodyPoint = (SnakePoint*) getValue(snake, i);
+
+        collision = (
+            (snakeHead->x == snakeBodyPoint->x)&&
+            (snakeHead->y == snakeBodyPoint->y)
+        );
+
+        if (collision)
+            i = snake->size;
+    }
+
+    return collision;
+}
+
+int isCollidingWithBorders(SnakePoint *snakeHead, Coordinate initGameArea, Coordinate endGameArea) {
 	return ( 
     	(snakeHead->x == initGameArea.x-1)||(snakeHead->x == endGameArea.x+1)||
         (snakeHead->y == initGameArea.y-1)||(snakeHead->y == endGameArea.y+1) 
     );
     
+}
+
+int isColliding(Queue *snake, Coordinate initGameArea, Coordinate endGameArea) {
+    return (
+        isCollidingWithBorders((SnakePoint*) getValue(snake, 0), initGameArea, endGameArea)||
+        isCollidingWithSnake(snake)
+    );
 }
 
 void feedSnake(Queue *snake) {
