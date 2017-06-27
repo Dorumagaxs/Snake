@@ -6,9 +6,11 @@ lines=$(tput lines)
 columns=$(tput cols)
 
 #Delete previous compiled file
-rm ./Snake
+if [ -f ./binary/Snake ]; then
+    rm ./binary/Snake
+fi
 #Compiles the source code
-gcc -pthread -o ./Snake ./src/Snake.c
+gcc -pthread -o ./binary/Snake ./src/Snake.c
 #Hide cursor
 tput civis
 #Set terminal on raw mode
@@ -16,7 +18,7 @@ stty raw
 #Set terminal to hide user input
 stty -echo
 #Execute the binary file
-./Snake $lines $columns
+./binary/Snake $lines $columns
 #Set terminal no cooked -brkint mode
 stty cooked -brkint
 #Set terminal to echo user input

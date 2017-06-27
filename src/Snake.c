@@ -13,15 +13,21 @@
 int screenWidth, screenHeight, stopGame;
 pthread_t tid[2];
 
+void printScore(int score) {
+	gotoxy(screenWidth-5, 3);
+	printf("%04d", score);
+}
+
 void* moving(void *snake) {
 	tid[1] = pthread_self();
 
-	int isThereFood;
+	int isThereFood, score;
 	Coordinate initGameArea, endGameArea, food;
 	struct timespec waitingTime;
 	SnakePoint *snakeHead;
 
 	isThereFood = 0;
+	score = 0;
 
 	initGameArea.x = 2;
 	initGameArea.y = 6;
@@ -33,6 +39,8 @@ void* moving(void *snake) {
 
 	snakeHead = (SnakePoint*) getValue(snake, 0);
 
+
+	printScore(score);
 	while (!stopGame) {
 		clearSnake(snake);
 		moveSnake((Queue*)snake);
@@ -43,6 +51,9 @@ void* moving(void *snake) {
 		if (ateFood(snakeHead, food)) {
 			isThereFood = 0;
 			feedSnake(snake);
+
+			score++;
+			printScore(score);
 		}
 		if (!isThereFood) {
 			food = generateFood(snake, initGameArea, endGameArea);
