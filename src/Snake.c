@@ -35,7 +35,7 @@ void* moving(void *snake) {
 		clearArea(initGameArea, endGameArea);
 		moveSnake((Queue*)snake);
 		printSnake((Queue*)snake);
-		if (isThereCollidingWithBorder(snakeHead, initGameArea, endGameArea)) {
+		if (isCollidingWithBorder(snakeHead, initGameArea, endGameArea)) {
 			stopGame = 1;
 		}
 		nanosleep(&waitingTime, NULL);
@@ -62,7 +62,7 @@ void startGame() {
 	snake = newSnake(screenWidth/2 - 2, screenHeight/2);
 
 	srand(time(NULL));
-	
+
 	threadError = pthread_create(&(tid[1]), NULL, &moving, snake);
 	
 	if (threadError != 0) {

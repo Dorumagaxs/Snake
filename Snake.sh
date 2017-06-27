@@ -5,6 +5,8 @@
 lines=$(tput lines)
 columns=$(tput cols)
 
+#Delete previous compiled file
+rm ./bin/Snake
 #Compiles the source code
 gcc -pthread -o ./bin/Snake ./src/Snake.c
 #Hide cursor
