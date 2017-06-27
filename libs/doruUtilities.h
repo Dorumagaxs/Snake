@@ -55,3 +55,8 @@ void clearArea(Coordinate init, Coordinate end) {
         }
     }
 }
+
+void printCentered(char string[], int initX, int endX, int y) {
+    gotoxy( (endX-initX)/2 - strlen(string)/2, y);
+    printf("%s", string);
+}

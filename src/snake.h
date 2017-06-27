@@ -55,7 +55,7 @@ void printSnake(Queue *snake) {
 	for (i=1; i<snake->size; i++) {
 		snakePoint = (SnakePoint*) getValue(snake, i);
 		gotoxy(snakePoint->x, snakePoint->y);
-		printf("#");
+		printf("¤");
 		fflush(stdout);
 	}
 }

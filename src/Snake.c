@@ -1,6 +1,7 @@
 //ANSI C libs
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include <pthread.h>
 
@@ -13,9 +14,19 @@
 int screenWidth, screenHeight, stopGame;
 pthread_t tid[2];
 
+void printScore(int score);
+void* moving(void *snake);
+void startGame(Coordinate initTitleArea, Coordinate endTitleArea);
+void showRecordsTable(Coordinate initTitleArea, Coordinate endTitleArea);
+void menu();
+
 void printScore(int score) {
-	gotoxy(screenWidth-5, 3);
-	printf("%04d", score);
+	
+	char scoreString[15], stringifiedNumber[5];
+	
+	gotoxy(screenWidth/2-5, 3);
+	printf("SCORE: %04d", score);
+
 }
 
 void* moving(void *snake) {
@@ -66,7 +77,7 @@ void* moving(void *snake) {
 	return NULL;
 }
 
-void startGame() {
+void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 
 	int i, threadError, event;
 	Coordinate initGameArea, endGameArea;
@@ -84,6 +95,9 @@ void startGame() {
 	snake = newSnake(screenWidth/2 - 2, screenHeight/2);
 
 	srand(time(NULL));
+
+	clearArea(initTitleArea, endTitleArea);
+	clearArea(initGameArea, endGameArea);
 
 	threadError = pthread_create(&(tid[1]), NULL, &moving, snake);
 	
@@ -122,10 +136,44 @@ void startGame() {
 		else
 			stopGame = 1;
 	}
+	menu();
+}
+
+void showRecordsTable(Coordinate initTitleArea, Coordinate endTitleArea) {
+	
 }
 
 void menu() {
-	startGame();
+	int option;
+	Coordinate initTitleArea, endTitleArea;
+
+	initTitleArea.x = 2;
+	initTitleArea.y = 2;
+	endTitleArea.x = screenWidth-1;
+	endTitleArea.y = 4;
+
+	system("clear");
+    printScreenBorder(screenWidth, screenHeight);
+
+	printCentered("Snake", 1, screenWidth, 3);
+	printCentered("1 - Play", 1, screenWidth, 11);
+	printCentered("2 - Records", 1, screenWidth, 13);
+	printCentered("3 - Get the fuck out", 1, screenWidth, 15);
+
+	while (1) {
+		option = getchar();
+
+		switch(option) {
+			case 49:
+				startGame(initTitleArea, endTitleArea);
+				break;
+			case 50:
+				showRecordsTable(initTitleArea, endTitleArea);
+				break;
+			case 51:
+				exit(0);
+		}
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -140,12 +188,7 @@ int main(int argc, char *argv[]) {
     screenHeight = atoi(argv[1]);
     screenWidth = atoi(argv[2]);
     
-    system("clear");
-    printScreenBorder(screenWidth, screenHeight);
-
     menu();
-
-    
 
 	return 0;
 }
