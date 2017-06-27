@@ -13,7 +13,7 @@
 #include "snake.h"
 #include "scores.h"
 
-int screenWidth, screenHeight, stopGame;
+int screenWidth, screenHeight, stopGame, score;
 pthread_t tid[2];
 
 void printScore(int score);
@@ -33,7 +33,7 @@ void printScore(int score) {
 void* moving(void *snake) {
 	tid[1] = pthread_self();
 
-	int isThereFood, score;
+	int isThereFood;
 	Coordinate initGameArea, endGameArea, food;
 	struct timespec waitingTime;
 	SnakePoint *snakeHead;
@@ -77,6 +77,7 @@ void* moving(void *snake) {
 		} 
 	}
 
+    addNewScore(score);
 	return NULL;
 }
 
@@ -141,6 +142,8 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 		else
 			stopGame = 1;
 	}
+    addNewScore(score);
+
 	menu();
 }
 
