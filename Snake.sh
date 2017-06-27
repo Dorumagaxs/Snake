@@ -5,6 +5,11 @@
 lines=$(tput lines)
 columns=$(tput cols)
 
+#Create 'binary' folder
+if [ ! -d ./binary ]; then
+    mkdir ./binary	
+fi
+
 #Delete previous compiled file
 if [ -f ./binary/Snake ]; then
     rm ./binary/Snake
