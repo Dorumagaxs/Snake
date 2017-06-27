@@ -11,12 +11,16 @@ rm ./bin/Snake
 gcc -pthread -o ./bin/Snake ./src/Snake.c
 #Hide cursor
 tput civis
-#Put terminal on raw mode
+#Set terminal on raw mode
 stty raw
+#Set terminal to hide user input
+stty -echo
 #Execute the binary file
 ./bin/Snake $lines $columns
-#Put terminal no cooked -brkint mode
+#Set terminal no cooked -brkint mode
 stty cooked -brkint
+#Set terminal to echo user input
+stty echo
 #Unhide cursor
 tput cnorm
 

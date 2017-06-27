@@ -1,0 +1,9 @@
+**FEATURES**
+	Title
+	Score
+	Records
+	Menu
+
+**BUGS FIXES**
+	Collision with snake body	
+	Disallow turning backwards

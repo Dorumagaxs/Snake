@@ -16,10 +16,12 @@ pthread_t tid[2];
 void* moving(void *snake) {
 	tid[1] = pthread_self();
 
-	int i, isThereFood;
+	int isThereFood;
 	Coordinate initGameArea, endGameArea, food;
 	struct timespec waitingTime;
 	SnakePoint *snakeHead;
+
+	isThereFood = 0;
 
 	initGameArea.x = 2;
 	initGameArea.y = 6;
@@ -32,11 +34,20 @@ void* moving(void *snake) {
 	snakeHead = (SnakePoint*) getValue(snake, 0);
 
 	while (!stopGame) {
-		clearArea(initGameArea, endGameArea);
+		clearSnake(snake);
 		moveSnake((Queue*)snake);
 		printSnake((Queue*)snake);
 		if (isCollidingWithBorder(snakeHead, initGameArea, endGameArea)) {
 			stopGame = 1;
+		}
+		if (ateFood(snakeHead, food)) {
+			isThereFood = 0;
+			feedSnake(snake);
+		}
+		if (!isThereFood) {
+			food = generateFood(snake, initGameArea, endGameArea);
+			isThereFood = 1;
+			printFood(food);
 		}
 		nanosleep(&waitingTime, NULL);
 	}
