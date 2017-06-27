@@ -10,7 +10,7 @@
 //Modules
 #include "snake.h"
 
-int screenWidth, screenHeight;
+int screenWidth, screenHeight, stopGame;
 pthread_t tid[2];
 
 void* moving(void *snake) {
@@ -19,6 +19,7 @@ void* moving(void *snake) {
 	int i;
 	Coordinate initGameArea, endGameArea;
 	struct timespec waitingTime;
+	SnakePoint *snakeHead;
 
 	initGameArea.x = 2;
 	initGameArea.y = 6;
@@ -28,10 +29,15 @@ void* moving(void *snake) {
 	waitingTime.tv_sec = 0;
 	waitingTime.tv_nsec = 100000000;
 
-	while (1) {
-		moveSnake((Queue*)snake);
+	snakeHead = (SnakePoint*) getValue(snake, 0);
+
+	while (!stopGame) {
 		clearArea(initGameArea, endGameArea);
+		moveSnake((Queue*)snake);
 		printSnake((Queue*)snake);
+		if (isThereCollision(snakeHead, initGameArea, endGameArea)) {
+			stopGame = 1;
+		}
 		nanosleep(&waitingTime, NULL);
 	}
 
@@ -40,7 +46,7 @@ void* moving(void *snake) {
 
 void startGame() {
 
-	int i, threadError, stopGame, event;
+	int i, threadError, event;
 	Coordinate initGameArea, endGameArea;
 	struct timespec waitingTime;
 	Queue *snake;
@@ -89,10 +95,8 @@ void startGame() {
 				}
 			}
 		}
-		else {
+		else
 			stopGame = 1;
-			pthread_cancel(tid[1]);
-		}
 	}
 }
 

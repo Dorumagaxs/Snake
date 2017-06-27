@@ -80,7 +80,7 @@ void turnSnake(Queue *snake, Direction direction) {
 	snakeHead->direction = direction;
 }
 
-int checkCollision(SnakePoint *snakeHead, Coordinate initGameArea, Coordinate endGameArea) {
+int isThereCollision(SnakePoint *snakeHead, Coordinate initGameArea, Coordinate endGameArea) {
     int x, y, collision;
     
     collision = 0;
