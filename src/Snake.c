@@ -37,7 +37,7 @@ void* moving(void *snake) {
 		clearSnake(snake);
 		moveSnake((Queue*)snake);
 		printSnake((Queue*)snake);
-		if (isCollidingWithBorder(snakeHead, initGameArea, endGameArea)) {
+		if (isColliding(snake, initGameArea, endGameArea)) {
 			stopGame = 1;
 		}
 		if (ateFood(snakeHead, food)) {
