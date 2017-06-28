@@ -13,21 +13,33 @@
 #include "snake.h"
 #include "scores.h"
 
+char playerName[10];
 int screenWidth, screenHeight, stopGame, score;
 pthread_t tid[2];
 
-void printScore(int score);
+void printOnGameHeader(int score);
 void* moving(void *snake);
 void startGame(Coordinate initTitleArea, Coordinate endTitleArea);
+void choosePlayerName(Coordinate initTitleArea, Coordinate endTitleArea);
 void showRecordsTable(Coordinate initTitleArea, Coordinate endTitleArea);
 void menu();
+
+void printOnGameHeader(int score) {
+	Record record;
+
+	gotoxy(3,3);
+	printf("PLAYER: %s", playerName);
+
+	printScore(score);
+
+	record = getRecord();
+    gotoxy(screenWidth-17-strlen(record.playerName), 3);
+    printf("RECORD: %04d (%s)", record.score, record.playerName);
+}
 
 void printScore(int score) {
 	gotoxy(screenWidth/2-5, 3);
 	printf("SCORE: %04d", score);
-
-    gotoxy(screenWidth-15, 3);
-    printf("RECORD: %04d", getRecord());
 }
 
 void* moving(void *snake) {
@@ -52,7 +64,7 @@ void* moving(void *snake) {
 	snakeHead = (SnakePoint*) getValue(snake, 0);
 
 
-	printScore(score);
+	printOnGameHeader(score);
 	while (!stopGame) {
 		clearSnake(snake);
 		moveSnake((Queue*)snake);
@@ -77,12 +89,11 @@ void* moving(void *snake) {
 		} 
 	}
 
-    addNewScore(score);
+    addNewScore(playerName, score);
 	return NULL;
 }
 
 void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
-
 	int i, threadError, event;
 	Coordinate initGameArea, endGameArea;
 	struct timespec waitingTime;
@@ -117,6 +128,7 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 		fflush(stdin);
 		event = getchar();
 
+		fprintf(fopen("bla.txt","w"), "%i", event);
 		if (event == 27) {
 			event = getchar();
 
@@ -142,9 +154,21 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea) {
 		else
 			stopGame = 1;
 	}
-    addNewScore(score);
+    addNewScore(playerName, score);
 
 	menu();
+}
+
+void choosePlayerName(Coordinate initTitleArea, Coordinate endTitleArea) {
+	system("stty cooked -brkint && stty echo");
+
+	gotoxy(screenWidth/2 - 15,8);
+	printf("Choose a name as player: ");
+	fgets(playerName, 10, stdin);
+	fflush(stdin);
+
+	system("stty raw && stty -echo");
+	startGame(initTitleArea, endTitleArea);
 }
 
 void showRecordsTable(Coordinate initTitleArea, Coordinate endTitleArea) {
@@ -164,16 +188,16 @@ void menu() {
     printScreenBorder(screenWidth, screenHeight);
 
 	printCentered("Snake", 1, screenWidth, 3);
-	printCentered("1 - Play", 1, screenWidth, 11);
-	printCentered("2 - Records", 1, screenWidth, 13);
-	printCentered("3 - Get the fuck out", 1, screenWidth, 15);
+	printCentered("1 - Play", 1, screenWidth, 12);
+	printCentered("2 - Records", 1, screenWidth, 14);
+	printCentered("3 - Get the fuck out", 1, screenWidth, 16);
 
 	while (1) {
 		option = getchar();
 
 		switch(option) {
 			case 49:
-				startGame(initTitleArea, endTitleArea);
+				choosePlayerName(initTitleArea, endTitleArea);
 				break;
 			case 50:
 				showRecordsTable(initTitleArea, endTitleArea);
