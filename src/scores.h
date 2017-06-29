@@ -1,24 +1,13 @@
-typedef struct Record {
+typedef struct Score {
 	char playerName[10];
 	int score;
-} Record;
+} Score;
 
-typedef struct ScoreNode {
-	char *player;
-	int value;
-	struct ScoreNode *next;
-} ScoreNode;
-
-typedef struct ScoreList {
-	int size;
-	ScoreNode *first, *last;
-} ScoreList;
-
-Record getRecord() {
+Score getRecord() {
     char readName[10];
     int readScore;
     FILE *scoresFile;
-    Record record;
+    Score record;
 
     record.score = 0;
     strcpy(record.playerName, "None");
@@ -55,8 +44,31 @@ void addNewScore(char playerName[10], int newScore) {
     }
 }
 
-void getScores() {
+Queue* getScores() {
     int i;
-    FILE scoresFile;
-    Queue scores;
+    FILE *scoresFile;
+    Score *readScore;
+    Queue *scores;
+
+    scores = NULL;
+    scoresFile = fopen("files/scores", "r");
+
+    if (scoresFile != NULL) {
+        scores = newQueue();
+
+        while (!feof(scoresFile)) {
+            readScore = (Score*) malloc(sizeof(Score));
+
+            if (readScore != NULL) {
+                fscanf(scoresFile, "%s", readScore->playerName);
+                fscanf(scoresFile, "%i", &readScore->score);
+            }
+
+            enqueue(scores, readScore);
+        }
+    }
+
+    fclose (scoresFile);
+
+    return scores;
 }

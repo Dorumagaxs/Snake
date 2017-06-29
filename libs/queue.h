@@ -86,3 +86,9 @@ void* getValue(Queue *queue, unsigned int index) {
 
 	return wantedValue;
 }
+
+void deleteQueue(Queue *queue) {
+	while (queue->size > 0) {
+		dequeue(queue);
+	}
+}
