@@ -18,6 +18,7 @@ int screenWidth, screenHeight, stopGame, score;
 pthread_t tid[2];
 
 void printOnGameHeader(int score);
+void printScore(int score);
 void* moving(void *snake);
 void startGame(Coordinate initTitleArea, Coordinate endTitleArea);
 void choosePlayerName(Coordinate initTitleArea, Coordinate endTitleArea);
@@ -89,7 +90,6 @@ void* moving(void *snake) {
 		} 
 	}
 
-    addNewScore(playerName, score);
 	return NULL;
 }
 

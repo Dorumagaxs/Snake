@@ -15,37 +15,48 @@ typedef struct ScoreList {
 } ScoreList;
 
 Record getRecord() {
+    char readName[10];
     int readScore;
-    FILE *scores;
+    FILE *scoresFile;
     Record record;
 
     record.score = 0;
     strcpy(record.playerName, "None");
     
-    scores = fopen("files/scores", "r");
+    scoresFile = fopen("files/scores", "r");
     
-    if (scores != NULL) {
-        while (!feof(scores)) {
-        	fscanf(scores, "%s", record.playerName);
-            fscanf(scores, "%i", &readScore);
+    if (scoresFile != NULL) {
+        while (!feof(scoresFile)) {
+        	fscanf(scoresFile, "%s", readName);
+            fscanf(scoresFile, "%i", &readScore);
 
-            if (readScore > record.score)
+            if (readScore > record.score) {
+                strcpy(record.playerName, readName);
                 record.score = readScore;
+            }
         }
     }
 
-    fclose(scores); 
+    fclose(scoresFile); 
 
     return record;
 }
 
 void addNewScore(char playerName[10], int newScore) {
-    FILE *scores;
+    FILE *scoresFile;
 
-    scores = fopen("files/scores", "a");
+    if (newScore > 0) {
+        scoresFile = fopen("files/scores", "a");
 
-    if (scores != NULL)
-        fprintf(scores, "\n%s %i", playerName, newScore);
+        if (scoresFile != NULL)
+            fprintf(scoresFile, "\n%s %i", playerName, newScore);
 
-    fclose(scores);
+        fclose(scoresFile);
+    }
+}
+
+void getScores() {
+    int i;
+    FILE scoresFile;
+    Queue scores;
 }
