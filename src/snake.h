@@ -5,6 +5,8 @@ typedef struct SnakePoint {
 	Direction direction;
 } SnakePoint;
 
+int isMoving, isTurning;
+
 SnakePoint* newSnakePoint(int x, int y, Direction direction) {
 	SnakePoint *newSnakePoint = (SnakePoint*) malloc(sizeof(SnakePoint));
 
@@ -26,6 +28,9 @@ Queue* newSnake(int x, int y) {
 
 	for (i=2; i>=-2; i--)
 		enqueue(snake, newSnakePoint(x+i, y, RIGHT));
+
+    isMoving = 0;
+    isTurning = 0;
 
 	return snake;
 }
@@ -62,6 +67,9 @@ void moveSnake(Queue *snake) {
 	int i;
 	SnakePoint *snakePoint;
 
+    while (isTurning) {} 
+
+    isMoving = 1;
 	for (i=(snake->size-1); i>=0; i--) {
 		snakePoint = (SnakePoint*) getValue(snake, i);
 
@@ -81,6 +89,7 @@ void moveSnake(Queue *snake) {
 			snakePoint->direction = nextSnakePoint->direction;
 		}
 	}
+    isMoving = 0;
 }
 
 int isValidDirection(Direction snakeHeadDirection, Direction turnDirection) {
@@ -93,8 +102,12 @@ int isValidDirection(Direction snakeHeadDirection, Direction turnDirection) {
 }
 
 void turnSnake(SnakePoint *snakeHead, Direction turnDirection) {
-	if (isValidDirection(snakeHead->direction, turnDirection))
+	while (isMoving) {}
+    
+    isTurning = 1;
+    if (isValidDirection(snakeHead->direction, turnDirection))
 		snakeHead->direction = turnDirection;
+    isTurning = 0;
 }
 
 Coordinate generateFood(Queue *snake, Coordinate initGameArea, Coordinate endGameArea) {
