@@ -67,7 +67,6 @@ void* moving(void *snake) {
 
 	printOnGameHeader(score);
 	while (!stopGame) {
-		clearSnake(snake);
 		moveSnake((Queue*)snake);
 		printSnake((Queue*)snake);
 		if (isColliding(snake, initGameArea, endGameArea)) {
@@ -131,16 +130,16 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea, Coordinate ini
 
 				switch (event) {
 					case 65:
-						turnSnake(snakeHead, UP);
+						turnSnake(snake, UP);
 						break;
 					case 66:
-						turnSnake(snakeHead, DOWN);
+						turnSnake(snake, DOWN);
 						break;
 					case 67:
-						turnSnake(snakeHead, RIGHT);
+						turnSnake(snake, RIGHT);
 						break;
 					case 68:
-						turnSnake(snakeHead, LEFT);
+						turnSnake(snake, LEFT);
 						
 				}
 			}
