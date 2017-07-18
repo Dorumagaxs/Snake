@@ -123,7 +123,6 @@ void startGame(Coordinate initTitleArea, Coordinate endTitleArea, Coordinate ini
 		fflush(stdin);
 		event = getchar();
 
-		fprintf(fopen("bla.txt","w"), "%i", event);
 		if (event == 27) {
 			event = getchar();
 

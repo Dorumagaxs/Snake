@@ -21,11 +21,13 @@ if [ ! -d ./binary ]; then
 fi
 
 #Delete previous compiled file
-if [ -f ./binary/Snake ]; then
-    rm ./binary/Snake
-fi
+#if [ -f ./binary/Snake ]; then
+#    rm ./binary/Snake
+#fi
 #Compiles the source code
-gcc -pthread -o ./binary/Snake ./src/Snake.c
+if [ ! -f ./binary/Snake ]; then
+    gcc -pthread -o ./binary/Snake ./src/Snake.c
+fi
 #Hide cursor
 tput civis
 #Set terminal on raw mode
