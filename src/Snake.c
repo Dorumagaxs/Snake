@@ -178,6 +178,10 @@ void showScoresTable(Coordinate initTitleArea, Coordinate endTitleArea, Coordina
 	gotoxy(3, screenHeight-1);
 	printf("Move with arrows, pageUp/Down, Home/End. Tap another key to leave");
 
+	isMoving = 0;
+	isTurning = 0;
+	moved = 0;
+
 	scoresQueue = getScores();
 	if (scoresQueue != NULL) {
 		leave = 0;

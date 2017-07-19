@@ -5,7 +5,7 @@ typedef struct SnakePoint {
 	Direction direction;
 } SnakePoint;
 
-int alreadyTurning;
+int isTurning, isMoving, moved;
 
 SnakePoint* newSnakePoint(int x, int y, Direction direction) {
 	SnakePoint *newSnakePoint = (SnakePoint*) malloc(sizeof(SnakePoint));
@@ -29,8 +29,6 @@ Queue* newSnake(int x, int y) {
 	for (i=2; i>=-2; i--)
 		enqueue(snake, newSnakePoint(x+i, y, RIGHT));
     
-    alreadyTurning = 0;
-
 	return snake;
 }
 
@@ -68,24 +66,31 @@ void moveSnake(Queue *snake) {
 
     clearSnake(snake);
 
-	for (i=(snake->size-1); i>=0; i--) {
-		snakePoint = (SnakePoint*) getValue(snake, i);
+    if (!isTurning) {
+    	isMoving = 1;
 
-		if (snakePoint->direction == RIGHT)
-			snakePoint->x++;
-		else if (snakePoint->direction == LEFT)
-			snakePoint->x--;
-		else if (snakePoint->direction == DOWN)
-			snakePoint->y++;
-		else if (snakePoint->direction == UP)
-			snakePoint->y--;
+		for (i=(snake->size-1); i>=0; i--) {
+			snakePoint = (SnakePoint*) getValue(snake, i);
 
-		if (i > 0) {
-			SnakePoint *nextSnakePoint;
-			nextSnakePoint = (SnakePoint*) getValue(snake, i-1);
+			if (snakePoint->direction == RIGHT)
+				snakePoint->x++;
+			else if (snakePoint->direction == LEFT)
+				snakePoint->x--;
+			else if (snakePoint->direction == DOWN)
+				snakePoint->y++;
+			else if (snakePoint->direction == UP)
+				snakePoint->y--;
 
-			snakePoint->direction = nextSnakePoint->direction;
+			if (i > 0) {
+				SnakePoint *nextSnakePoint;
+				nextSnakePoint = (SnakePoint*) getValue(snake, i-1);
+
+				snakePoint->direction = nextSnakePoint->direction;
+			}
 		}
+
+		moved = 1;
+		isMoving = 0;
 	}
 }
 
@@ -101,16 +106,19 @@ int isValidDirection(Direction snakeHeadDirection, Direction turnDirection) {
 void turnSnake(Queue *snake, Direction turnDirection) {
     SnakePoint *snakeHead;
     
-    if (!alreadyTurning) {
-        alreadyTurning = 1;
+    if (!isMoving) {
+    	isTurning = 1;
 
-        snakeHead = (SnakePoint*) getValue(snake, 0);
-        if (isValidDirection(snakeHead->direction, turnDirection))
-            snakeHead->direction = turnDirection;
-        
-        moveSnake(snake);
-        alreadyTurning = 0;
-    }
+	    if (moved) {
+	    	moved = 0;
+
+	        snakeHead = (SnakePoint*) getValue(snake, 0);
+	        if (isValidDirection(snakeHead->direction, turnDirection))
+	            snakeHead->direction = turnDirection;
+	    }
+
+	    isTurning = 0;
+	}
 }
 
 Coordinate generateFood(Queue *snake, Coordinate initGameArea, Coordinate endGameArea) {
