@@ -7,4 +7,6 @@ src/log*
 files/
 files/*
 
+binary/
+
 a.out
